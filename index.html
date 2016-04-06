@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+    <!-- Metadata to edit -->
+		<title>Introduction to git and Gitlab</title>
+		<meta name="author" content="Anna Kennedy">
+    <!-- /Metadata to edit -->
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/rl.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+
+        <!-- Title slide -->
+				<section>
+					<h1>Introduction to git and gitlab</h1>
+					<p>
+						<small>Anna Kennedy</small>
+					</p>
+					<aside class="notes">
+            Some notes here
+					</aside>
+				</section>
+
+
+<!-- Overview -->
+				<section>
+					<h1>Overview</h1>
+					<p class="fragment"><ul>
+							<li>Version control</li>
+							<li>Git concepts</li>
+							<li>Using git locally</li>
+							<li>Using git with a remote</li>
+							<li>Undoing mistakes</li>
+							<li>Branches</li>
+							<li>Caring for your commit history</li>
+					</ul></p>
+					<aside class="notes">
+					</aside>
+				</section>
+
+
+<!-- Version control -->
+				<section>
+					<h1>Version control</h1>
+					<p class="fragment"><ul>
+							<li><b>Version control</b> means that we keep a history of all the changes made in a set of documents.</li>
+							<li>Git is one example of a <b>version control</b> system<br/></li><br/>
+							<li>Pre-version control:
+                <ul>
+							    <li>Copy file1 to file1.bak</li>
+                </ul>
+              </li>	
+							<li>CVS / SVN:
+                <ul>
+							    <li>Centralised storage with revision history</li>
+                </ul>
+              </li>	
+							<li>Git:
+                <ul>
+							    <li>Distributed system</li>
+                </ul>
+              </li>	
+					</ul></p>
+				</section>
+
+				<section>
+					<h2>SVN</h2>
+          <p>Centralised storage with revision history</p>
+					<p class="fragment"><ul>
+              <li>client-server model</li>
+              <li>central server houses master repo</li>
+              <li>developer laptop is the client</li>
+              <li>check-out -> modify -> check-in</li><br/>
+              <li>Advantages / disadvantages</li>
+              <li>+ simple system</li>
+              <li>- difficult to work offline</li>
+              <li>- difficult to work collaboratively</li>
+              <li>- advanced functionality quite hard to get right</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h2>Git</h2>
+          <p>Distributed version control</p>
+					<p class="fragment"><ul>
+							<li>every copy of the project is a full repository</li><br/>
+              <li>Advantages / disadvantages</li>
+							<li>- steep learning curve</li>
+							<li>+ save changes locally when working offline</li>
+							<li>+ branching</li>
+							<li>+ merging</li>
+							<li>+ every copy is a full backup</li>
+							<li>+ very fast</li>
+					</ul></p>
+				</section>
+
+<!-- Using git locally -->
+				<section>
+					<h1>Using git locally</h1>
+				</section>
+
+				<section>
+					<h3>Projects in git</h3>
+					<p><ul>
+							<li>Any directory can be brought under git's control</li>
+							<ul><li>both new and existing projects</li></ul><br/>
+							<li><b>git init</b> initialises a directory with a .git subdir</li>
+							<ul>
+							  <li>This directory is now a <b>local git repository</b></li>
+                <li>The .git folder contains metadata about the project</li>
+							  <li>To remove a project from git, simply delete the .git folder</li>
+              </ul>
+					</ul></p>
+				</section>
+  
+				<section>
+					<h3>Exercise: Initialise a new project in git</h3>
+					<p><ul>
+							<li>Make a new directory and move into it</li>
+                <pre><code>
+$ mkdir myproject
+$ cd myproject
+                </code></pre>
+							<li>Initialise the directory as a git repository</li>
+                <pre><code>
+$ git init  
+  Initialized empty Git repository in /home/myname/projects/myproject
+
+$ ls -la
+  drwxr-xr-x 4096 Apr  5 09:54 .
+  drwxr-xr-x 4096 Apr  4 12:40 ..
+  drwxr-xr-x 4096 Apr  5 08:13 .git
+                </code></pre>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Configure global git variables</h3>
+					<p><ul>
+						<li>Git requires that version history is associated with users</li>
+						<li>Thus we need to set name and email as global variables</li>
+						<li>Trying to use git without this results in the following annoying message:</li>
+					</ul>
+          <pre><code>
+  Your name and email address were configured automatically based
+  on your username and hostname. Please check that they are accurate.
+  You can suppress this message by setting them explicitly:
+
+  $  git config --global user.name "Your Name"
+  $  git config --global user.email you@example.com
+          </code></pre>
+					</p>
+				</section>
+
+				<section>
+					<h3>Exercise: Check / set your name and email settings</h3>
+					<p><ul>
+							<li>Use <b>git config -l</b> to see if you've already set your name and email address</li>
+							<li>If you need to set them, use</li>
+           </ul>   
+           <pre><code>
+$ git config --global user.name "Your Name"
+$ git config --global user.email you@example.com
+          </code></pre>
+					</p>
+				</section>
+
+				<section>
+					<h3>Checking the current status</h3>
+					<p><ul>
+						<li>Running <b>git status</b> at any point shows the current state of the directory</li>
+						<li>It also often gives hints about how to proceed or undo steps</li>
+					</ul>
+          <pre><code>
+$ git init  
+  Initialized empty Git repository in /home/myname/projects/myproject
+
+$ git status
+  On branch master
+  Initial commit
+  nothing to commit (create/copy files and use "git add" to track)
+          </code></pre>
+					</p>
+				</section>
+
+				<section>
+					<h3>Getting help</h3>
+					<p><ul>
+						<li>Access the man pages on the command-line like:</li>
+					</ul>
+          <pre><code>
+$ git help
+  The most commonly used git commands are:
+   add        Add file contents to the index
+   branch     List, create, or delete branches
+   checkout   Checkout a branch or paths to the working tree
+
+$ git help add
+  NAME
+       git-add - Add file contents to the index
+
+  SYNOPSIS
+       git add [-n] [-v] [-f] [-i] [-p] [--] [<pathspec>...]
+          </code></pre>
+					</p>
+				</section>
+
+				<section>
+					<h3>Adding files to the project</h3>
+					<p><ul>
+							<li><b>git add <i>filename</i></b> to add files to staging</li>
+							<li><b>git add .</b> to add everything</li>
+					</ul></p>
+				</section>
+ 
+				<section>
+					<h3>Exercise: Add files to the project</h3>
+					<p><ul>
+							<li>Make a file inside the directory "helloworld.txt"</li>
+							<li>Add this file to git</li></ul>
+            <pre><code>
+$ vim helloworld.txt
+
+$ git status
+  On branch master
+    Untracked files:
+    (use "git add file..." to include in what will be committed)
+      helloworld.txt
+
+$ git add helloworld.txt
+
+$ git status
+  On branch master
+  Changes to be committed:
+    (use "git reset HEAD file..." to unstage)
+       new file: helloworld.txt
+              </code></pre>
+					 </p>
+				</section>
+
+				<section>
+					<h3>Committing the changes to the local repo</h3>
+					<p><ul>
+							<li>After a file is added to staging, we then have to commit the changes</li>
+							<li><b>git commit</b> and then enter commit message on the next screen</li>
+							<li><b>git commit -m <i>commit message</i></b> to do both steps at once</li>
+					</ul></p>
+				</section>
+ 
+				<section>
+					<h3>Exercise: Commit the changes to your local repo</h3>
+					<p><ul>
+								<li>Commit this file to your local repository</li>
+                <p><pre><code>
+$ git commit -m "First commit"
+
+$ git status
+On branch master
+nothing to commit, working directory clean
+                </code></pre></p>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Basic git rhythm</h3>
+					<p><ul>
+								<li>Make changes</li>
+	  						<li>Stage the changes with <b>git add</b></li>
+	  						<li>Commit the changes with <b>git commit</b></li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>View commit history</h3>
+					<p><ul>
+						<li><b>git log</b> shows a history of commits</li>
+						<li><b>git log -p</b> shows what has changed with each commit</li>
+						<li><b>git log -2</b> only shows the last two commits</li>
+					</ul></p>
+            <p><pre><code>
+$ git log -p
+commit 320a8f00a4a0de7c9b3f39851d3bc164d0769697
+Author: myname myname@ak-rl.example.com
+Date:   Mon Apr 4 12:52:23 2016 +0200
+    First commit
+
+diff --git a/file1.txt b/file1.txt
+new file mode 100644
+index 0000000..907b308
+--- /dev/null
++++ b/file1.txt
+@@ -0,0 +1 @@
++Hello everyone!
+                </code></pre></p>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>A little more about commits</h3>
+					<p><ul>
+							<li>Commits are basically snapshots</li>
+							<li>Each commit has a unique reference number</li>
+							<li>The most recent commit is called HEAD</li>
+							<li>The two before that are called HEAD~ and HEAD~2</li>
+							<li>We can use both the reference number and the HEAD notation to refer to previous commits</li>
+					</ul></p>
+          <p><pre><code>
+$ git log 
+commit 320a8f00a4a0de7c9b3f39851d3bc164d0769697
+Author: myname myname@ak-rl.example.com
+Date:   Mon Apr 4 12:52:23 2016 +0200
+    First commit
+                </code></pre></p>
+
+				</section>
+
+ 				<section>
+					<h3>Amend the commit message</h3>
+					<p><ul>
+							<li>If you accidentally did a commit with a mistake in the commit message</li>
+							<li><b>git commit --amend</b> lets you change it </li>
+					</ul></p>
+				</section>
+ 
+				<section>
+					<h3>Exercise: Edit your most recent commit</h3>
+					<p><ul>
+								<li>Edit your most recent commit message</li>
+                <p><pre><code>
+$ git commit --amend
+                </code></pre>
+                <pre><code>
+Allow user login
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+                </code></pre></p>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Exercise: Make and view a more interesting commit history</h3>
+					<p><ul>
+					  <li>So far we literally only have one commit - let's make a bit more to work with</li>
+					  <li>Make two more files, and commit them</li>
+					  <li>Edit one file, and commit that</li>
+					  <li>Make two files and only commit one of them</li>
+					  <li>Now commit the other one</li>
+					  <li>Use <b>git log</b> and <b>git status</b> to follow the history as you go</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Comparing files</h3>
+					<p><ul>
+						<li><b>git diff</b> compares current files with the latest committed version</li>
+						<li>After you've made a change to a file, but before it's committed</li>
+						<li>Use 'git diff' to see what the difference between the files is</li>
+					</ul></p>
+            <p><pre><code>
+$ echo "Pleased to meet you all." >> helloworld.txt
+
+$ git diff
+diff --git a/file1.txt b/file1.txt
+index 404c772..2d48565 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1,2 +1,3 @@
+Hello everyone!
++Pleased to meet you all.
+                </code></pre></p>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Exercise: Compare files</h3>
+					<p><ul>
+              <li>Make a change to a file</li>
+						  <li>Use 'git diff' to see what the difference between the file now and the last committed version</li>
+					</ul></p>
+            <p><pre><code>
+$ git diff
+diff --git a/file1.txt b/file1.txt
+index 404c772..2d48565 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1,2 +1,3 @@
+Hello everyone!
++Pleased to meet you all.
+                </code></pre></p>
+					</ul></p>
+				</section>
+
+
+				<section>
+					<h3>Stashing your work</h3>
+					<p><ul>
+								<li>We like to try and keep our commits meaningful (more on this later)</li>
+								<li>but if you're in the middle of working on something and you need to pause or switch branches</li>
+								<li>you can save your work-in-progress state with <b>git stash</b></li>
+								<li>Can stash multiple events</li>
+								<li><b>git stash list</b> to view them</li>
+								<li><b>git stash apply</b> to pick up your most recent stash</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Exercise: Stashing your work</h3>
+					<p><ul>
+								<li>Make some changes to a file</li>
+								<li>Stash your changes</li>
+								<li>View the stash list</li>
+								<li>Verify the directory is at the state of the latest commit</li>
+								<li>Apply the stash to regain your work in progress</li>
+					</ul></p>
+            <p><pre><code>
+$ git stash
+  Saved working directory and index state WIP on master: e99a3ac Allow user login
+  HEAD is now at e99a3ac Latest hegnar configs
+
+$ git stash list
+  stash@{0}: WIP on master: e99a3ac Allow user login
+            </code></pre></p>
+
+				</section>
+
+
+
+<!-- Using git with a remote -->
+				<section>
+					<h1>Using git with <br/>a remote</h1>
+				</section>
+
+				<section>
+					<h3>Using a remote repository</h3>
+					<p><ul>
+							<li>So far we only used our local repository</li>
+							<li>If we're interested in collaboration or backups, we need to look at communicating with a remote repository</li><br/>
+							<li>For this course, our remote is housed in Gitlab</li>
+							<li>Otherwise the remote could be</li>
+							<ul>
+							  <li>plain git</li>
+							  <li>gitolite</li>
+							  <li>Gitorious</li>
+                <li>Github</li>
+              </ul>
+					</ul></p>
+				</section>
+
+				<section>
+					<h2>Gitlab</h2>
+					<p><ul>
+							<li>Gitlab provides a web-gui frontend</li>
+							<li>Lots of useful collaborative and exploratory features</li>
+             </ul>
+					<p><img width="450" src="img/gitlab.png" alt="gitlab"></p>
+				</section>
+
+				<section>
+					<h3>Creating a remote in Gitlab</h3>
+					<p>
+            <ul>
+							<li>Pretty straightforwards to create a new remote in Gitlab</li>
+             </ul>
+            <img width="950" src="img/gitlab_newproject.png" alt="gitlab"></p>
+				</section>
+
+				<section>
+					<h3>Exercise: Create a new remote repository</h3>
+					<p><ul>
+							<li>Within the Gitlab UI, make a new project</li>
+							<li>Name your project, leave it as private</li>
+							<li>Notice that it tells you how to proceed!</li>
+  
+							<li>Within your local repository, tell git where the remote is:</li></ul>
+                <pre><code>
+$ git remote add origin git@gitlab.example.com:myname/myprojectname.git
+  # Set a new remote
+                </code></pre>
+					</p>
+				</section>
+
+				<section>
+					<h3>Pushing changes from the local to the remote repo</h3>
+					<p>
+            <ul>
+							<li>So far all our work is only in our local repository</li>
+							<li>Use <b>git push</b> to send our commits to the remote repository</li>
+							<li>The first time we do this we need to set the upstream branch</li>
+							<li><b>origin</b> is git's default name for the remote repo</li>
+             </ul>
+                <pre><code>
+$ git push -u origin master
+
+  Counting objects: 5, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (5/5), done.
+  Writing objects: 100% (5/5), 721 bytes | 0 bytes/s, done.
+  Total 5 (delta 2), reused 0 (delta 0)
+  To git@gitlab.example.com:myname/myproject.git
+     e99a3ac..f91ed8c  master -> master
+                </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Exercise: Push changes from the local to the remote repo</h3>
+					<p>
+            <ul>
+							<li>Use <b>git push</b> to send your commits to the remote repository</li>
+							<li>The first time we do this we need to set the upstream branch with -u</li>
+							<li>You should see your files in Gitlab now</li>
+             </ul>
+                <pre><code>
+$ git push -u origin master
+
+  Counting objects: 5, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (5/5), done.
+  Writing objects: 100% (5/5), 721 bytes | 0 bytes/s, done.
+  Total 5 (delta 2), reused 0 (delta 0)
+  To git@gitlab.example.com:myname/myproject.git
+     e99a3ac..f91ed8c  master -> master
+
+                </code></pre>
+            </p>
+				</section>
+
+				<section>
+					<h3>Retrieving changes from the remote</h3>
+					<p><ul>
+								<li>If changes have been made on the remote, we need to update our local repository to get those changes</li>
+								<li>Use <b>git pull</b> to retrieve any changes</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Exercise: pulling remote changes</h3>
+					<p class="fragment"><ul>
+							<li>Edit a file in Gitlab</li>
+							<li>Pulled the changes your local repository</li>
+							<li>What do <b>git status</b> and <b>git log</b> say?</li></ul>
+          <pre><code>
+$ git pull
+
+  remote: Counting objects: 3, done.
+  remote: Compressing objects: 100% (3/3), done.
+  remote: Total 3 (delta 2), reused 0 (delta 0)
+  Unpacking objects: 100% (3/3), done.
+  From gitlab.example.com:myname/myproject
+   f91ed8c..3f522c5  master     -> origin/master
+  Updating f91ed8c..3f522c5
+  Fast-forward
+    file1.txt | 3 ++-
+    1 file changed, 2 insertions(+), 1 deletion(-)
+          </code></pre>
+          </p>
+				</section>
+
+      	<section>
+					<h3>Pull behind the scenes</h3>
+						<p><ul>
+							<li>So far we've done <b>git pull</b> to get the changes from the remote repository</li>
+							<li><b>git pull</b> really means <b>git fetch</b> then <b>git merge</b></li>
+							<li>We'll talk more about merging soon</li>
+							<li>Be aware that sometimes doing a fetch and then a merge instead of pull can give you more insight into what git is doing</li>
+				  	</ul>
+				</section>
+
+				<section>
+					<h3>Viewing remotes on the command line</h3>
+					<p><ul>
+            <li><b>git remote</b> shows and can amend the remote repository</li>
+            <li>This information is also available in .git/config</li>
+            <li><b>origin</b> is just git's default name for the remote</li>
+          <pre><code>
+$ git remote -v
+origin  git@gitlab.example.com:anna/testrepository.git (fetch)
+origin  git@gitlab.example.com:anna/testrepository.git (push)
+          </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Basic git rhythm with remote</h3>
+					<p><ul>
+								<li>Get updates with <b>git pull</b></li>
+								<li>Make changes</li>
+	  						<li>Stage the changes with <b>git add</b></li>
+	  						<li>Commit the changes with <b>git commit</b></li>
+	  						<li>Push the changes to the remote with <b>git push</b></li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Basic git rhythm with remote</h3>
+					<p><img width="650" src="img/gitflow.png" alt="gitlab"></p>
+					</ul></p>
+				</section>
+	
+				<section>
+					<h3>Working collaboratively</h3>
+					<p><ul>
+						<li>Git is an amazing tool for working collaboratively</li>
+						<li>However then we need to start worrying about changes we didn't make</li>
+						<li>If you're the sole committer to a repository, things are usually straightforwards</li>
+						<li>However in a team, chances are that people will make conflicting changes at times</li>
+						<li>Let's take a pragmatic look at two common issues</li>
+					</ul></p>
+				</section>
+	
+				<section>
+					<h3>Troubleshooting 1: the push is rejected</h3>
+					<p>
+            <ul><li>If you try to <b>git push</b> your changes and see something like:</li></ul>
+            <pre><code>
+$ git push
+To git@gitlab.example.com:myname/myproject.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'git@gitlab.example.com:myname/testrepository.git'
+hint: Updates were rejected because the remote contains work that you do not have locally. 
+            </code></pre>
+            <ul><li>Then you're trying to push before you've updated your local repo with remote changes.</li>
+                <li>Fix this by doing a <b>git pull</b> first</li>
+            </ul>
+            <pre><code>
+$ git pull
+$ git push
+          </code></pre>
+        </p>
+				</section>
+
+				<section>
+					<h3>Troubleshooting 2: we got a merge conflict</h3>
+					<p>
+            <ul>
+              <li>If we try to <b>git pull</b> (git fetch + git merge) and see something like:</li>
+            </ul>
+          <pre><code>
+Auto-merging file1.txt
+CONFLICT (content): Merge conflict in file1.txt
+Automatic merge failed; fix conflicts and then commit the result.
+          </code></pre>
+          <ul><li>Then we have a merge conflict we need to resolve</li></ul>
+        </p>
+				</section>
+
+				<section>
+        	<p>
+          Let's see what the problem is:
+          <pre><code>
+$ git status
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   file1.txt
+          </code></pre>
+          <pre><code>
+$ git diff
+  diff --cc file1.txt
+  index 528038e,f324c51..0000000
+  --- a/file1.txt
+  +++ b/file1.txt
+  @@@ -1,4 -1,4 +1,8 @@@
+  ++<<<<<<< HEAD
+   +hello
+  ++=======
+  + goodbye
+  ++>>>>>>> 3911012567a3a5a0432bea090b82b58d74d5aa9d
+          </code></pre></p>
+				</section>
+
+				<section>
+          <p><ul>
+            <li>Resolution: decide what the file <b>should</b> contain </li>
+            <li>Git writes markers in the file around conflicting sections</li>
+            <li>Edit the file (including deleting the markers)</li>
+            <li>Add, commit, push.</li>
+          </ul>
+          <pre><code>
+$ cat file1.txt
+  <<<<<<< HEAD
+  hello
+  =======
+  goodbye
+  >>>>>>> 3911012567a3a5a0432bea090b82b58d74d5aa9d
+
+$ nano file1.txt
+$ git add file1.txt
+$ git commit -m "Fixing conflict"
+$ git push
+          </code></pre></p>
+				</section>
+
+				<section>
+					<h3>Working collaboratively</h3>
+					<p><ul>
+						<li>With that in mind, let's move on to using a common repository</li>
+						<li>For the purposes of this course, we've set up an example repo in Gitlab for us all to clone</li>
+						<li>Then we can experiment with making and resolving conflicts</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Cloning an existing repository</h3>
+					<p><ul>
+            <li>If we want to work on an existing repository, we can either edit the files in Gitlab, or clone the repo locally.</li>
+            <li>Editing in the UI tends to only be practical for very small, isolated changes.</li>
+            <li>To clone a repo, find the correct URL in Gitlab, displayed ssh/http on the project page.</li>
+            <li>SSH needs a key to have been set up, HTTPS needs a username and password.</li>
+          </ul>
+          <pre><code data-trim>
+$ git clone git@gitlab.example.com:myname/myproject.git
+or
+$ git clone https://gitlab.example.com/myname/myproject.git
+          </code></pre></p>
+				</section>
+
+				<section>
+					<h3>Exercise: Clone a remote</h3>
+					<p><ul>
+            <li>Clone the example repo to your local directory</li>
+            <li>Make a new file, add and commit the changes locally</li>
+            <li>If you're working in a group, remember to do <b>git pull</b> to get any changes made by other people</li>
+            <li>Push the changes back to the remote</li>
+            <li>Did you get any conflicts?</li>
+            <li>Verify the new file is visible in Gitlab</li>
+            <pre><code data-trim>
+$ git clone git@gitlab.example.com:myname/myproject.git
+$ git add ...
+$ git commit ...
+$ git pull
+$ git push
+            </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Exercise: resolving issues</h3>
+					<p><ul>
+            <li>Make a file in the Github UI and commit it</li>
+            <li><b>Without doing a pull</b>, edit the same file locally</li>
+            <li>Add and commit the file</li>
+            <li>What happens when you try to push it back to the remote?</li>
+            <li>Look at <b>git diff</b> and <b>git status</b></li>
+            <li>Do a <b>git pull</b> to get the remote changes</li>
+            <li>This should cause a merge conflict</li>
+            <li>Edit the file to resolve the conflict</li>
+            <li>Now try adding, committing, and pushing again</li>
+          </p>
+				</section>
+
+
+<!-- Undoing mistakes -->
+				<section>
+					<h1>Undoing mistakes</h1>
+				</section>
+
+				<section>
+					<h3>Undoing mistakes</h3>
+					<p><ul>
+            <li>We're human, and as such we make mistakes</li>
+            <li>If you use git regularly, you <b>will</b> screw it all up from time to time</li>
+            <li>Let's look at how to un-screw it up so it's not so terrifying next time</li>
+          </p>
+				</section>
+
+				<section>
+					<h3>Git reset to undo local changes</h3>
+					<p><ul>
+						<li><b>git reset file1.txt</b> un-stages a file (undoes git add)</li>
+						<li><b>git reset --soft HEAD~</b> undoes a git commit back to staging</li>
+						<li><b>git reset --hard HEAD~</b> undoes a git commit entirely</li>
+    				<li>use the commit number to revert to a specific commit</li>
+    				<li>use HEAD~2 to undo the last two commits</li>
+					</ul></p>
+            <p><pre><code>
+$ git log
+  commit ecb76ad2f5b753c10f5f24094ea27f29f8c2d004
+    Second commit
+  commit 320a8f00a4a0de7c9b3f39851d3bc164d0769697
+    First commit
+
+$ git reset --hard HEAD~
+or
+$ git reset --hard 320a8f00a4a0de7c9b3f39851d3bc164d0769697
+
+$ git log
+  commit 320a8f00a4a0de7c9b3f39851d3bc164d0769697
+    First commit
+                </code></pre></p>
+					</ul></p>
+				</section>
+
+				<section>
+					<h3>Exercise: Experiment with git reset</h3>
+					<p><ul>
+								<li>Create some new files</li>
+								<li>Add the changes and then use git reset to un-add them</li>
+								<li>Add and commit some changes then use git reset to undo</li>
+								<li>How do the --soft and --hard flags change the behaviour?</li>
+								<li>Can you reset the whole project back to a specific commit?</li>
+					</ul></p>
+            <p><pre><code>
+$ git reset file2.txt
+
+$ git reset --soft HEAD~
+
+$ git reset --hard HEAD~2
+
+$ git reset --hard 320a8f00a4a0de7c9b3f39851d3bc164d0769697
+                </code></pre></p>
+				</section>
+
+				<section>
+					<h3>Git revert</h3>
+          <p>Undo a commit but retain history
+           <pre><code>
+$ git log
+  commit 28972f7572e9465cc6a0994ce5fcc31ba2d1afbb
+  "Adding deploy button"
+
+$ git revert HEAD~
+  Revert "Adding deploy button"
+  This reverts commit 28972f7572e9465cc6a0994ce5fcc31ba2d1afbb.
+
+$ git log
+  commit 78413bb6fec87d10f24ec5c62592795befdb66f7
+  Reverts "Adding deploy button"
+
+  commit 28972f7572e9465cc6a0994ce5fcc31ba2d1afbb
+  "Adding deploy button"
+          </code></pre></p>
+				</section>
+
+				<section>
+					<h3>Exercise: using git revert</h3>
+					<p><ul>
+            <li>Make a change in a file</li>
+            <li>Add, commit, and push it</li>
+            <li>Now use <b>git revert</b> to roll back that change</li>
+            <li>Keep an eye on <b>git log</b></li>
+            <li>What does the history look like when you've finished?</li>
+            <li>How is this different to <b>git reset</b>?</li>
+          </ul>
+           <pre><code>
+$ git revert HEAD~
+  Revert "Adding deploy button"
+  This reverts commit 28972f7572e9465cc6a0994ce5fcc31ba2d1afbb.
+          </code></pre></p>
+				</section>
+
+
+
+<!-- Branches -->
+				<section>
+					<h1>Branches</h1>
+				</section>
+
+				<section>
+					<h3>Branches</h3>
+					<p><ul>
+            <li>One of git's most powerful features</li>
+            <li>Allow simultaneous work in different environmes</li>
+            <li>Develop features</li>
+            <li>Only merge in new code when you're ready</li>
+          </p>
+				</section>
+
+				<section>
+					<h3>Git workflow: master branch only</h3>
+					<p><img width="750" src="img/gitmasteronly.png" alt="git_master_branch"></p>
+					<p><b>master</b> is git's default main branch</p>
+				</section>
+
+				<section>
+					<h3>Git workflow: master branch and a hotfix branch</h3>
+					<p><img width="750" src="img/gitmasterhotfix.png" alt="git_master_branch"></p>
+				</section>
+
+				<section>
+					<h3>Git workflow: development and release branches</h3>
+					<p><img width="750" src="img/git.png" alt="git_master_branch"></p>
+				</section>
+
+				<section>
+					<h3>Branch commands</h3>
+					<p><ul>
+            <li><b>git checkout</b> switches between branches</li>
+            <li><b>git checkout -b</b> creates a new branch</li>
+            <li><b>git branch</b> branch displays the checked-out branches</li>
+            </ul>
+          <pre><code>
+$ git branch
+*  master
+
+$ git checkout -b featurebranch
+
+$ git branch
+* featurebranch
+  master
+          </code></pre></p>
+				</section>
+
+    		<section>
+					<h3>Exercise: working with branches</h3>
+					<p>Let's make a new feature branch of the existing repository that you cloned.
+          <pre><code>
+$ git checkout -b featurebranch
+Switched to a new branch 'featurebranch'
+
+$ git branch
+* featurebranch
+  master
+          </code></pre><ul>
+            <li>Create some more files and edit existing files</li>
+            <li>Add and commit your changes</li>
+            <li>The first time you push, you'll need to set up the remote for this branch like:</li>
+          </p>
+          <pre><code>
+ $ git push --set-upstream origin featurebranch
+          </code></pre><ul>
+         </p>
+				</section>
+
+				<section>
+					<h3>Merging branches</h3>
+					<p><ul>
+            <li>You've developed a whole new feature in the feature branch, and now it's time to merge it back into the master branch</li>
+            <li>We can merge branches on the command line</li>
+            <li>or use <b>merge request</b> in Gitlab (this is called 'pull request' in Github)</li>
+            <li>Merge requests are more appropriate for merging to production branches as they encourage code review and thoughtful deploys</li>
+          </p>
+				</section>
+
+				<section>
+					<h3>Exercise: merging branches in Gitlab</h3>
+					<p><ul>
+            <li>In Gitlab, create a new merge request to merge your feature branch into the master branch</li>
+            <li>Explore the request and check the changes you made</li>
+            <li>Accept the merge request</li>
+            <li>See the changes now appear in the main branch in Gitlab</li>
+            <li>Locally switch back to the master branch with <b>git checkout</b> and do a <b>git pull</b> to get up-to-date</li>
+          </ul>
+          <pre><code>
+$ git checkout master
+  Switched to branch 'master'
+  Your branch is behind 'origin/master' by 2 commits, and can be fast-forwarded.
+    (use "git pull" to update your local branch)
+
+$ git pull
+  Updating 7a59581..4d4adb3
+  Fast-forward
+   file2.txt | 1 +
+   1 file changed, 1 insertion(+)
+    create mode 100644 file2.txt
+          </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Exercise: merging branches on the command line</h3>
+					<p><ul>
+            <li>On the command line, ensure you're on the feature branch</li>
+            <li>Make some changes in the feature branch, add, commit, and push them</li>
+            <li>Switch back to the master branch, merge in the feature branch, and push back to the remote</li></ul>
+            <pre><code>
+$ git checkout master
+$ git merge master featurebranch
+$ git push
+            </code></pre><ul>
+            <li>Note that we <b>merge into the branch we're standing in</b></li>
+           </ul>
+           </p>
+				</section>
+  
+
+				<section>
+					<h3>Investigative tools</h3>
+					<p><ul>
+            <li>Sometimes we need to work out exactly what's going on in a repository</li>
+            <li><b>git log</b> to see a history of commits</li>
+            <li><b>git reflog</b> to see a history of both commits and amends</li>
+            <li><b>git blame <i>filename</i></b> to see who authored every line in a file</li>
+            <li><b>git log --graph</b> to see the relationship of branches</li>
+           </ul>
+            <pre><code>
+$ git log --graph
+* commit f91ed8cabfd053cde63f168087885bfdd0358419
+|     Updated readme
+|    
+*   commit b8775a17e6fa9c9b6a9dd9f7b323a280a4db8faf
+|\  Merge: 9544040 e99a3ac
+| |     Merge branch 'master' of gitlab.example.com:myname/myproject
+| |   
+| * commit e99a3ac35a86c9bce4c8993ed8b6f1b7c8bf2a39
+| |     Allow user login
+| |   
+* | commit 9544040efc0537d2f5a10975c0b779c3ccad0142
+|/      Add remote users
+|
+          </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Exercise: Investigative tools</h3>
+					<p><ul>
+            <li>Try out the following tools:</li>
+            <li><b>git log</b> to see a history of commits</li>
+            <li><b>git reflog</b> to see a history of both commits and amends</li>
+            <li><b>git log --graph</b> to see the relationship of branches</li>
+            <li><b>git blame <i>filename</i></b> to see who authored every line in a file</li>
+            </ul>
+          </p>
+				</section>
+
+				<section>
+					<h3>Working with multiple stable branches</h3>
+					<p><ul>
+            <li>Alongside the main master branch, there can also be other stable branches</li>
+            <li>A common workflow is to develop features in a feature branch and then merge up through the environments</li>
+          </ul></p>
+				</section>
+
+				<section>
+					<h3>Working with multiple stable branches</h3>
+					<p><img width="750" src="img/stablebranches.png" alt="git_stable_branch"></p>
+				</section>
+
+				<section>
+					<h3>Feature vs stable branches</h3>
+				  	<p class="fragment"><ul>
+							<li>Feature branches</li>
+              <ul><li>can be considered private branches</li>
+                  <li>a place to experiment</li>
+                  <li>therefore often messy commit history</li>
+              </ul>
+							<li>Stable branches</li>
+              <ul><li>can be considered public branches</li>
+                  <li>need to think a bit more carefully about commit history</li>
+              </ul>
+							<br/><li>Further reading: sandofsky.com/blog/git-workflow.html</li>
+				  	</ul></p>
+				</section>
+
+
+
+<!-- Caring for your commit history -->
+				<section>
+					<h1>Caring for your<br/>commit history</h1>
+				</section>
+
+				<section>
+					<h3>Why do we need to worry about our commit history?</h3>
+				  	<p class="fragment"><ul>
+							<li>A well-maintained commit history will allow you to:</li>
+              <ul>
+							<li>track when features were introduced</li>
+							<li>discover when bugs were introduced</li>
+							<li>provides some amount of documentation</li>
+				  	</ul>
+							<li>A good commit history <b>tells a story</b></li>
+            </ul></p>
+				</section>
+
+				<section>
+					<h3>Commit message guidelines</h3>
+				  	<p class="fragment"><ul>
+							<li>Use one line to describe what the commit <b>does</b></li>
+							<li>Examples of good commit messages:</li>
+              <ul>
+  							<li>Allow users to sign in remotely</li>
+  							<li>Fixed bug #123</li>
+  							<li>Added postcode field to address table</li>
+	  			  	</ul>
+							<li>Examples of bad commit messages:</li>
+              <ul>
+  							<li>Commit4</li>
+  							<li>Typo</li>
+  							<li>dfkasdjefskjh</li>
+	  			  	</ul>
+            </ul></p>
+				</section>
+
+
+				<section>
+					<h3>Commit history choices: Rebasing</h3>
+				  	<p class="fragment"><ul>
+							<li>You've made a feature branch, and done some work on it</li>
+							<li>but while you've been working on it, your colleagues have made some changes to master</li>
+							<li>if you do a <b>git merge</b> all the master commits will go <i>on top of your feature commits</i></li>
+							<li>So instead we do a <b>git rebase</b> to apply the commits <i>underneath your feature commits</i></li>
+				  	</ul></p>
+				</section>
+
+				<section>	
+					<p><img width="750" src="img/merge_rebase.png" alt="merge_rebase"></p>
+				</section>
+
+				<section>
+					<h3>Commit history choices: Merging with fast-forwarding</h3>
+				  	<p class="fragment"><ul>
+							<li>If no changes have occured on the master branch while feature development was underway</li>
+							<li>git will try to merge branches with <b>fast-forward</b></li>
+							<li>All commits from the feature branch are visible in the master branch</li>
+							<li>This can be useful, or can be clutter in the version history</li>
+              <li>We can use <b>--no-ff</b> to submit a single commit for the merge</li>
+				  	</ul></p>
+				</section>
+
+				<section>	
+					<p><img width="750" src="img/fastforward.png" alt="fastforward"></p>
+				</section>
+
+				<section>
+					<h3>Editing the commit history</h3>
+				  	<p class="fragment"><ul>
+							<li>In order to tell a good story with your commit history, you will probably need to edit your commit history at times</li>
+							<li><b>git commit --amend</b> lets you amend your most recent commit</li>
+							<li><b>git rebase --interactive</b> for more complex history rewrites</li>
+							<li><b>git push --force <i>branchname</i></b> to push your new historys</li>
+							<li>NB <b>NEVER</b> rewrite your commit history after you've 'gone public' with the branch (ie, pushed to a shared repository).</li>
+            </ul></p>
+        </section>
+
+				<section>
+					<h3>Interactive rebase</h3>
+				  	<p class="fragment"><ul>
+							<li><b>git rebase --interactive</b> will drop you into a text editor where we can specify all the things we want to change</li>
+							<li>Commands:</li><ul>
+							  <li>pick = use commit</li>
+							  <li>reword = use commit, but edit the commit message </li>
+							  <li>edit = use commit, but stop for amending</li>
+							  <li>squash = use commit, but meld into previous commit</li>
+							  <li>fixup = like "squash", but discard this commit's log message</li>
+							  <li>exec = run command (the rest of the line) using shell</li>
+              </ul></li>
+				  	</ul>
+          </p>
+				</section>
+
+				<section>
+					<h3>Interactive rebase</h3>
+				  	<p>
+             <pre><code>
+$ git rebase -i HEAD~3
+
+pick 6c169da Fixed bug #234
+pick 78413bb Typo in user prefs 
+pick 2bc4f9b Allow users to update their preferences
+
+# Rebase 28972f7..2bc4f9b onto :w28972f7
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+# If you remove a line here THAT COMMIT WILL BE LOST.
+# However, if you remove everything, the rebase will be aborted.
+# Note that empty commits are commented out
+          </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Rewrite a commit message</h3>
+				  	<p>
+             <pre><code>
+$ git rebase -i HEAD~3
+
+reword 6c169da Fixed bug #234
+pick 78413bb Typo in user prefs 
+pick 2bc4f9b Allow users to update their preferences
+            </code></pre>
+             <pre><code>
+Fixed bug #234: do not allow remote access to db
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+            </code></pre>
+             <pre><code>
+$ git log
+commit 6c169da
+
+  Fixed bug #234: do not allow remote access to db
+          </code></pre>
+          </p>
+				</section>
+
+				<section>
+					<h3>Squashing commits together</h3>
+				  	<p>
+             <pre><code>
+$ git rebase -i HEAD~3
+
+pick 6c169da Fixed bug #234: do not allow remote access to db
+squash 78413bb Typo in user prefs 
+pick 2bc4f9b Allow users to update their preferences
+            </code></pre>
+             <pre><code>
+Rebasing
+# This is a combination of 2 commits.
+# The first commit's message is:
+Fixed bug #234: do not allow remote access to db
+# This is the 2nd commit message:
+Typo in user prefs
+            </code></pre>
+             <pre><code>
+$ git log
+
+commit 9107a08
+    Fixed bug #234: do not allow remote access to db
+    Typo in user prefs
+
+commit 2bc4f9b
+    Allow users to update their preferences
+          </code></pre>
+          </p>
+				</section>
+
+<!-- Summary -->
+				<section>
+					<h1>Summary</h1>
+					<p class="fragment"><ul>
+							<li>Version control</li>
+							<li>Git concepts</li>
+							<li>Using git locally</li>
+							<li>Using git with a remote</li>
+							<li>Undoing mistakes</li>
+							<li>Branches</li>
+							<li>Caring for your commit history</li>
+					</ul></p>
+					<aside class="notes">
+					</aside>
+				</section>
+
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
+

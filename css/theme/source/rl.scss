@@ -1,0 +1,54 @@
+/**
+ * Default theme for reveal.js.
+ *
+ * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+
+// Include theme-specific fonts
+@font-face {
+    font-family: 'League Gothic';
+    src: url('../../lib/font/league_gothic-webfont.eot');
+    src: url('../../lib/font/league_gothic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../lib/font/league_gothic-webfont.woff') format('woff'),
+	 url('../../lib/font/league_gothic-webfont.ttf') format('truetype'),
+	 url('../../lib/font/league_gothic-webfont.svg#LeagueGothicRegular') format('svg');
+
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+
+// Override theme settings (see ../template/settings.scss)
+$heading1TextShadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 20px 20px rgba(0,0,0,.15);
+
+$backgroundColor: white;
+$mainColor: #000000;
+$headingColor: #000000;
+$linkColor: #0000ff;
+
+$backgroundImageUrl: "../../lib/logo/rl.png";
+
+// Background generator
+@mixin bodyBackground() {
+    background: white;
+    background-image: url($backgroundImageUrl),    -moz-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 97%,rgba(117,117,117,1) 98%,rgba(117,117,117,1) 100%); /* FF3.6+ */
+    background-image: url($backgroundImageUrl), -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 97%,rgba(117,117,117,1) 98%,rgba(117,117,117,1) 100%); /* Chrome10+, Safari5.1+ */
+    background-image: url($backgroundImageUrl),      -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 97%,rgba(117,117,117,1) 98%,rgba(117,117,117,1) 100%); /* Opera 11.10+ */
+    background-image: url($backgroundImageUrl),     -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 97%,rgba(117,117,117,1) 98%,rgba(117,117,117,1) 100%); /* IE10+ */
+    background-image: url($backgroundImageUrl), -linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 97%,rgba(117,117,117,1) 98%,rgba(117,117,117,1) 100%); /* W3C */
+    background-repeat: no-repeat;
+
+}
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
