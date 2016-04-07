@@ -329,7 +329,7 @@ index 0000000..907b308
 					<h3>A little more about commits</h3>
 					<p><ul>
 							<li>Commits are basically snapshots</li>
-							<li>Each commit has a unique reference number</li>
+							<li>Each commit is identified by a unique hash</li>
 							<li>The most recent commit is called HEAD</li>
 							<li>The two before that are called HEAD~ and HEAD~2</li>
 							<li>We can use both the reference number and the HEAD notation to refer to previous commits</li>
@@ -890,7 +890,7 @@ $ git revert HEAD~
 					<h3>Branches</h3>
 					<p><ul>
             <li>One of git's most powerful features</li>
-            <li>Allow simultaneous work in different environmes</li>
+            <li>Allow simultaneous work in different environments</li>
             <li>Develop features</li>
             <li>Only merge in new code when you're ready</li>
           </p>
@@ -915,15 +915,22 @@ $ git revert HEAD~
 				<section>
 					<h3>Branch commands</h3>
 					<p><ul>
-            <li><b>git checkout</b> switches between branches</li>
-            <li><b>git checkout -b</b> creates a new branch</li>
-            <li><b>git branch</b> branch displays the checked-out branches</li>
+            <li><b>git branch</b> displays the checked-out branches</li>
+            <li><b>git branch <i>branchname</i></b> creates a new branch</li>
+            <li><b>git checkout <i>branchname</i></b> switches to the new branch</li>
+            <li><b>git checkout -b</b> combines the above commands to create a new branch and switch to it</li>
             </ul>
           <pre><code>
 $ git branch
 *  master
 
-$ git checkout -b featurebranch
+$ git branch featurebranch
+
+$ git branch
+*  master
+   featurebranch
+
+$ git checkout featurebranch
 
 $ git branch
 * featurebranch
